@@ -1,48 +1,32 @@
-# Simple Django Rest API for setup a university schedule and export to docs/xls - WORK IN PROGRESS
-[![Build Status](https://travis-ci.org/znatali/schedule_api.svg?branch=master)](https://travis-ci.org/znatali/schedule_api)
-[![Built with](https://img.shields.io/badge/Built_with-Cookiecutter_Django_Rest-F7B633.svg)](https://github.com/agconti/cookiecutter-django-rest)
+# schedule_api
 
-Simple Django Rest API. Check out the project's [documentation](http://znatali.github.io/schedule_api/).
+schedule_api
 
-
-TODO for:
-Environment:
-1. Use [poetry](https://python-poetry.org/) for external packages. Remove usage of pip.
-2. Update config of the project to use env template.
-
-Project:
-1. Validation of the Schedule, ScheduleDay, ScheduleItem.
-2. Add version to models.
-3. Implement teaching_subject model.
-4. Add translation.
-5. Export Schedule to doc.
+This project was generated with [`wemake-django-template`](https://github.com/wemake-services/wemake-django-template). Current template version is: [770bbf1e0dd96ca898ab50768b66b67e0cc8f78f](https://github.com/wemake-services/wemake-django-template/tree/770bbf1e0dd96ca898ab50768b66b67e0cc8f78f). See what is [updated](https://github.com/wemake-services/wemake-django-template/compare/770bbf1e0dd96ca898ab50768b66b67e0cc8f78f...master) since then.
 
 
-# Prerequisites
+[![wemake.services](https://img.shields.io/badge/%20-wemake.services-green.svg?label=%20&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC%2FxhBQAAAAFzUkdCAK7OHOkAAAAbUExURQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP%2F%2F%2F5TvxDIAAAAIdFJOUwAjRA8xXANAL%2Bv0SAAAADNJREFUGNNjYCAIOJjRBdBFWMkVQeGzcHAwksJnAPPZGOGAASzPzAEHEGVsLExQwE7YswCb7AFZSF3bbAAAAABJRU5ErkJggg%3D%3D)](https://wemake.services) 
+[![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 
-- [Docker](https://docs.docker.com/docker-for-mac/install/)  
 
-# Local Development
+## Prerequisites
 
-Start the dev server for local development:
-```bash
-docker-compose up
-```
+You will need:
 
-Run a command inside the docker container:
+- `python3.7` (see `pyproject.toml` for full version)
+- `postgresql` with version `9.6`
+- `docker` with [version at least](https://docs.docker.com/compose/compose-file/#compose-and-docker-compatibility-matrix) `18.02`
 
-```bash
-docker-compose run --rm web [command]
-```
 
-To add new package(s):
-1.  Add to requirements.txt
-2. Run 
-```bash
-docker-compose build
-```
+## Development
 
-To run tests:
-```bash
-docker-compose run --rm web ./manage.py test
-```
+When developing locally, we use:
+
+- [`editorconfig`](http://editorconfig.org/) plugin (**required**)
+- [`poetry`](https://github.com/python-poetry/poetry) (**required**)
+- `pycharm 2017+` or `vscode`
+
+
+## Documentation
+
+Full documentation is available here: [`docs/`](docs).
