@@ -37,7 +37,7 @@ class UserCreate(UserSerializerBase):
 
     class Meta(UserSerializerBase.Meta):
         fields = UserSerializerBase.Meta.fields + ['username', 'first_name', 'last_name', 'auth_token', 'password']
-        read_only_fields = ('auth_token',)
+        read_only_fields = ['auth_token']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -51,5 +51,5 @@ class UserUpdate(UserSerializerBase):
 
     class Meta(UserSerializerBase.Meta):
         fields = UserSerializerBase.Meta.fields + ['first_name', 'last_name', 'password']
-        read_only_fields = ('auth_token',)
+        read_only_fields = ['auth_token']
         extra_kwargs = {'password': {'write_only': True}}

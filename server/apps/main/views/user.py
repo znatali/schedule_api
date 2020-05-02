@@ -11,11 +11,12 @@ from server.apps.main.models import User
 from server.apps.main.permissions import IsUserOrReadOnly
 
 
-class UserViewSet(mixins.CreateModelMixin,
-     mixins.RetrieveModelMixin,
-     mixins.UpdateModelMixin,
-     mixins.ListModelMixin,
-     viewsets.GenericViewSet,
+class UserViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
 ):
     """Updates and retrieves user accounts."""
 
@@ -24,10 +25,9 @@ class UserViewSet(mixins.CreateModelMixin,
     permission_classes = (IsUserOrReadOnly,)
 
     def get_serializer(self, *args, **kwargs):
-
         """
-
         Route serializers based on action.
+
             list                    UserList
             retrieve                UserUpdate
             update, partial_update  UserUpdate

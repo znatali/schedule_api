@@ -53,7 +53,6 @@ class AuthViewSet(ViewSet):
         try:
             return _auth(request.user)
         except NotAuthenticated as exception:
-            # auth should return stripe publicKey even on failure
             return Response(
                 data={
                     'detail': exception.detail,

@@ -14,11 +14,12 @@ from server.apps.main.models.schedule_day import ScheduleDay
 from server.apps.main.models.schedule_item import ScheduleItem
 
 
-class ScheduleViewSet(mixins.CreateModelMixin,
+class ScheduleViewSet(
+    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     """Updates and retrieves schedules."""
 
@@ -28,7 +29,6 @@ class ScheduleViewSet(mixins.CreateModelMixin,
     @action(detail=True, methods=['get'])
     def download(self, request, pk):
         """Get formatted schedule."""
-
         wb = Workbook()
         ws = wb.active
 
@@ -42,7 +42,7 @@ class ScheduleViewSet(mixins.CreateModelMixin,
         start_day_row = 6
         for schedule_day in schedule_days:
             ws.cell(row=start_day_row, column=1).value = f'{schedule_day.title} ' +\
-                f'{schedule_day.date.strftime("%d-%b-%Y")}'
+                f'{schedule_day.date.strftime("%d-%b-%Y")}'  # noqa: WPS323
             schedule_items = ScheduleItem.objects.filter(schedule_day=schedule_day).all()
             start_day_row += 1
             for schedule_item in schedule_items:
@@ -58,23 +58,27 @@ class ScheduleViewSet(mixins.CreateModelMixin,
         return response
 
 
-class ScheduleDayViewSet(mixins.CreateModelMixin,
+class ScheduleDayViewSet(
+    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     """Updates and retrieves schedules for a day."""
+
     queryset = ScheduleDay.objects.all()
     serializer_class = ScheduleDaySerializer
 
 
-class ScheduleItemViewSet(mixins.CreateModelMixin,
+class ScheduleItemViewSet(
+    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     """Updates and retrieves schedule items."""
+
     queryset = ScheduleItem.objects.all()
     serializer_class = ScheduleItemSerializer
