@@ -48,7 +48,31 @@ MIDDLEWARE += (
     # https://github.com/bradmontgomery/django-querycount
     # Prints how many queries were executed, useful for the APIs.
     'querycount.middleware.QueryCountMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 )
+
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:3003',
+)
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'Access-Control-Allow-Credentials',
+    'content-type',
+    'origin',
+    'api-auth-key',
+    'X-CSRFToken',
+)
+CORS_ALLOW_CREDENTIALS = True
 
 
 def custom_show_toolbar(request):
@@ -63,9 +87,12 @@ DEBUG_TOOLBAR_CONFIG = {
 
 # This will make debug toolbar to work with django-csp,
 # since `ddt` loads some scripts from `ajax.googleapis.com`:
-CSP_SCRIPT_SRC = ("'self'", 'ajax.googleapis.com')
-CSP_IMG_SRC = ("'self'", 'data:')
 CSP_CONNECT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+CSP_DEFAULT_SRC = ("'none'",)
 
 
 # nplusone

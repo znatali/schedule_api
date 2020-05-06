@@ -42,6 +42,26 @@ class ScheduleItem(BaseMixin):
     )
     schedule_day = models.ForeignKey('ScheduleDay', on_delete=models.PROTECT)
 
+    class Meta(object):
+        constraints = [
+            models.UniqueConstraint(
+                fields=['start_time', 'schedule_day'],
+                name='start_time_schedule_day',
+            ),
+            models.UniqueConstraint(
+                fields=['end_time', 'schedule_day'],
+                name='end_time_schedule_day',
+            ),
+            models.UniqueConstraint(
+                fields=['title', 'start_time', 'schedule_day', 'teacher'],
+                name='title_start_time_schedule_day_teacher',
+            ),
+            models.UniqueConstraint(
+                fields=['title', 'end_time', 'schedule_day', 'teacher'],
+                name='title_end_time_schedule_day_teacher',
+            ),
+        ]
+
     def __str__(self):
         """Return string self title."""
         return self.title

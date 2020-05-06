@@ -5,7 +5,6 @@ from server.lib.base_mixin import BaseMixin
 
 MAX_TITLE_LONG = 200
 MAX_FORMAT_LONG = 20
-MAX_FACULTY_LONG = 500
 
 
 class Schedule(BaseMixin):
@@ -27,7 +26,7 @@ class Schedule(BaseMixin):
         )
 
     title = models.CharField(max_length=MAX_TITLE_LONG)
-    faculty = models.CharField(max_length=MAX_FACULTY_LONG)
+    faculty = models.ForeignKey('Faculty', on_delete=models.PROTECT)
     year = models.IntegerField()
     term = models.IntegerField()
     education_format = models.CharField(

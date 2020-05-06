@@ -268,6 +268,17 @@ python-versions = "*"
 version = "2.1.1"
 
 [[package]]
+category = "main"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+name = "django-cors-headers"
+optional = false
+python-versions = ">=3.5"
+version = "3.2.1"
+
+[package.dependencies]
+Django = ">=1.11"
+
+[[package]]
 category = "dev"
 description = "Django template coverage.py plugin"
 name = "django-coverage-plugin"
@@ -316,14 +327,6 @@ version = "3.3.0"
 
 [package.dependencies]
 Django = ">=2.0"
-
-[[package]]
-category = "main"
-description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
-name = "django-filter"
-optional = false
-python-versions = "*"
-version = "1.1.0"
 
 [[package]]
 category = "main"
@@ -378,6 +381,22 @@ version = "0.7.0"
 
 [[package]]
 category = "main"
+description = "Create a set of REST API endpoints for Authentication and Registration"
+name = "django-rest-auth"
+optional = false
+python-versions = "*"
+version = "0.9.5"
+
+[package.dependencies]
+Django = ">=1.8.0"
+djangorestframework = ">=3.1.3"
+six = ">=1.9.0"
+
+[package.extras]
+with_social = ["django-allauth (>=0.25.0)"]
+
+[[package]]
+category = "main"
 description = "Organize Django settings into multiple files and directories. Easily override and modify settings. Use wildcards and optional settings files."
 name = "django-split-settings"
 optional = false
@@ -415,18 +434,6 @@ version = "3.11.0"
 
 [package.dependencies]
 django = ">=1.11"
-
-[[package]]
-category = "main"
-description = "Better filtering for Django REST Framework"
-name = "djangorestframework-filters"
-optional = false
-python-versions = "*"
-version = "0.11.1"
-
-[package.dependencies]
-django-filter = ">=1.1,<2.0"
-djangorestframework = "*"
 
 [[package]]
 category = "dev"
@@ -1817,7 +1824,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "1400c9cc4929db9689b3889dbecb8fd95313eb654a9be7a4b48a9fa4d4cf255f"
+content-hash = "d8cf5bf8c36a4aae8b60cebfc613f8e378a41bc93c2453541f91446f3b911e4f"
 python-versions = "^3.7.7"
 
 [metadata.files]
@@ -1993,6 +2000,10 @@ django-axes = [
 django-concurrency = [
     {file = "django-concurrency-2.1.1.tar.gz", hash = "sha256:5daf6d4334ffad4d358444344115fee634f191a9be711ab4f99c8760cd6c76a4"},
 ]
+django-cors-headers = [
+    {file = "django-cors-headers-3.2.1.tar.gz", hash = "sha256:a5960addecc04527ab26617e51b8ed42f0adab4594b24bb0f3c33e2bd3857c3f"},
+    {file = "django_cors_headers-3.2.1-py3-none-any.whl", hash = "sha256:a785b5f446f6635810776d9f5f5d23e6a2a2f728ea982648370afaf0dfdf2627"},
+]
 django-coverage-plugin = [
     {file = "django_coverage_plugin-1.8.0.tar.gz", hash = "sha256:d53cbf3828fd83d6b89ff7292c6805de5274e36411711692043e67bcde25ae0c"},
 ]
@@ -2007,10 +2018,6 @@ django-debug-toolbar = [
 django-feature-policy = [
     {file = "django-feature-policy-3.3.0.tar.gz", hash = "sha256:dec5067ba4479abd71f69f4364759e9dba5f75edfc69f3396cec0d40d33cf7fc"},
     {file = "django_feature_policy-3.3.0-py3-none-any.whl", hash = "sha256:34d0547b8e1bf02b2bdcbd91ca86969aa4691df1cace473a276ef3106ba64312"},
-]
-django-filter = [
-    {file = "django-filter-1.1.0.tar.gz", hash = "sha256:ec0ef1ba23ef95b1620f5d481334413700fb33f45cd76d56a63f4b0b1d76976a"},
-    {file = "django_filter-1.1.0-py2.py3-none-any.whl", hash = "sha256:ea204242ea83790e1512c9d0d8255002a652a6f4986e93cee664f28955ba0c22"},
 ]
 django-health-check = [
     {file = "django-health-check-3.12.1.tar.gz", hash = "sha256:0563827e003d25fd4d9ebbd7467dea5f390435628d645aaa63f8889deaded73a"},
@@ -2030,6 +2037,9 @@ django-migration-linter = [
 django-querycount = [
     {file = "django-querycount-0.7.0.tar.gz", hash = "sha256:8f5123d78716ff0704f2373e746a7200b8d8417798ce4a99bf2de87e3768f9ce"},
 ]
+django-rest-auth = [
+    {file = "django-rest-auth-0.9.5.tar.gz", hash = "sha256:f11e12175dafeed772f50d740d22caeab27e99a3caca24ec65e66a8d6de16571"},
+]
 django-split-settings = [
     {file = "django-split-settings-1.0.1.tar.gz", hash = "sha256:2da16cd967cd38315ec7ff0ae0c9db8488f8528bb2e5de26cd898328dc4bbeac"},
     {file = "django_split_settings-1.0.1-py3-none-any.whl", hash = "sha256:8d636649023289d0ef0ba08b0a4f37761adc94a29ee0ebfe65922c3cb0594ede"},
@@ -2045,10 +2055,6 @@ django-test-migrations = [
 djangorestframework = [
     {file = "djangorestframework-3.11.0-py3-none-any.whl", hash = "sha256:05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4"},
     {file = "djangorestframework-3.11.0.tar.gz", hash = "sha256:e782087823c47a26826ee5b6fa0c542968219263fb3976ec3c31edab23a4001f"},
-]
-djangorestframework-filters = [
-    {file = "djangorestframework-filters-0.11.1.tar.gz", hash = "sha256:f9249bd6440574ff8788a8994407bf5974e461fbcf65c0bd4785f9e71836768a"},
-    {file = "djangorestframework_filters-0.11.1-py2.py3-none-any.whl", hash = "sha256:a7683bfbeb4eb2a246fbba830f80062fcff9697101ca87a8b7327346284aa518"},
 ]
 doc8 = [
     {file = "doc8-0.8.0-py2.py3-none-any.whl", hash = "sha256:d12f08aa77a4a65eb28752f4bc78f41f611f9412c4155e2b03f1f5d4a45efe04"},

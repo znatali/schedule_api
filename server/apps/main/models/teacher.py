@@ -18,8 +18,8 @@ class Teacher(BaseMixin):
 
     def __str__(self):
         """Return string self first_name."""
-        return self.first_name
+        return self.get_full_name()
 
-    def get_full_name(self):
+    def get_full_name(self) -> str:
         """Return full name."""
         return f'{self.first_name} {self.middle_name} {self.last_name}'

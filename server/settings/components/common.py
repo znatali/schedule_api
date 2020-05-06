@@ -9,7 +9,7 @@ For the full list of settings and their config, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from django.utils.translation import ugettext_lazy as ugt
 
@@ -37,7 +37,8 @@ INSTALLED_APPS: Tuple[str, ...] = (
 
     # Third party apps
     'rest_framework',  # utilities for rest apis
-    'rest_framework.authtoken',  # token authentication
+    'rest_auth',
+    # 'rest_framework.authtoken',  # token authentication
     # 'django_filters',  # for filtering rest endpoints
 
     # django-admin:
@@ -61,7 +62,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
 
 MIDDLEWARE: Tuple[str, ...] = (
     # Content Security Policy:
-    'csp.middleware.CSPMiddleware',
+    # 'csp.middleware.CSPMiddleware',
 
     # Django:
     'django.middleware.security.SecurityMiddleware',
@@ -78,8 +79,9 @@ MIDDLEWARE: Tuple[str, ...] = (
     'axes.middleware.AxesMiddleware',
 
     # Django HTTP Referrer Policy:
-    'django_http_referrer_policy.middleware.ReferrerPolicyMiddleware',
+    # 'django_http_referrer_policy.middleware.ReferrerPolicyMiddleware',
 )
+
 
 ROOT_URLCONF = 'server.urls'
 
@@ -178,6 +180,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.BCryptPasswordHasher',
@@ -185,6 +188,16 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.Argon2PasswordHasher',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'server.lib.csrf_disable.CsrfExemptSessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+}
 
 
 # Security
@@ -197,13 +210,11 @@ SECURE_BROWSER_XSS_FILTER = True
 
 X_FRAME_OPTIONS = 'DENY'
 
-# https://github.com/DmytroLitvinov/django-http-referrer-policy
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy#Syntax
-REFERRER_POLICY = 'same-origin'
+SESSION_COOKIE_SAMESITE: Optional[str] = None
+SESSION_COOKIE_AGE = 3600 * 24 * 60  # cookies age 60 days.
 
 # https://github.com/adamchainz/django-feature-policy#setting
 FEATURE_POLICY: Dict[str, Union[str, List[str]]] = {}  # noqa: WPS234
-
 
 # Timeouts
 EMAIL_TIMEOUT = 5
