@@ -15,33 +15,40 @@ class ScheduleItemSerializer(serializers.ModelSerializer):
     def validate(self, data):  # noqa: C901
         """Validates logic."""
         super().validate(data)
-        if data['start_time'] > data['end_time']:
-            raise ValidationError(detail={
-                'start_time': ['Start time cannot be later then end time.'],
-            })
-
-        other_items = ScheduleItem.objects.filter(
-            schedule_day=data['schedule_day'],
-        )
+        if 'start_time' in data and 'end_time' in data:
+            if data['start_time'] > data['end_time']:
+                raise ValidationError(detail={
+                    'start_time': ['Start time cannot be later then end time.'],
+                })
+        if 'schedule_day' in data:
+            other_items = ScheduleItem.objects.filter(
+                schedule_day=data['schedule_day'],
+            )
+        else:
+            other_items = ScheduleItem.objects.filter(
+                schedule_day=self.instance.schedule_day,
+            )
         if self.instance:
             other_items = other_items.exclude(id=self.instance.id)
 
         if other_items:
             for item in other_items:
-                if data['start_time'] == item.start_time:
-                    raise ValidationError(detail={
-                        'start_time': ['There is a class at this time already.'],
-                    })
-                if data['end_time'] == item.end_time:
-                    raise ValidationError(detail={
-                        'end_time': ['There is a class at this time already.'],
-                    })
-                if data['start_time'] < item.start_time < data['end_time']:
-                    raise ValidationError(detail={
-                        'start_time': ['There is a class at this time already.'],
-                    })
-                if item.start_time < data['start_time'] < item.end_time:
+                if 'start_time' in data:
+                    if data['start_time'] == item.start_time:
+                        raise ValidationError(detail={
+                            'start_time': ['There is a class at this time already.'],
+                        })
+                    if item.start_time < data['start_time'] < item.end_time:
+                        raise ValidationError(detail={
+                            'end_time': ['There is a class at this time already.'],
+                        })
+                if 'end_time' in data and data['end_time'] == item.end_time:
                     raise ValidationError(detail={
                         'end_time': ['There is a class at this time already.'],
                     })
+                if 'start_time' in data and 'end_time' in data:
+                    if data['start_time'] < item.start_time < data['end_time']:
+                        raise ValidationError(detail={
+                            'start_time': ['There is a class at this time already.'],
+                        })
         return data

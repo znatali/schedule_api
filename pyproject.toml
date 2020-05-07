@@ -41,6 +41,7 @@ djangorestframework = "^3.11.0"
 django_http_referrer_policy = "^1.0.1"
 django-cors-headers = "^3.2.1"
 django-rest-auth = "^0.9.5"
+python-dateutil = "^2.8.1"
 
 
 [tool.poetry.dev-dependencies]

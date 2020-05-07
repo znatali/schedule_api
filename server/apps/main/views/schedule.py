@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, permissions, viewsets
 from rest_framework.decorators import action
 
 from server.apps.main.logic.schedule_day_serializer import ScheduleDaySerializer
@@ -19,12 +19,14 @@ class ScheduleViewSet(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
     """Updates and retrieves schedules."""
 
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
     @action(detail=True, methods=['get'])
     def download(self, request, pk):
@@ -63,12 +65,14 @@ class ScheduleDayViewSet(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
     """Updates and retrieves schedules for a day."""
 
     queryset = ScheduleDay.objects.all()
     serializer_class = ScheduleDaySerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class ScheduleItemViewSet(
@@ -83,3 +87,4 @@ class ScheduleItemViewSet(
 
     queryset = ScheduleItem.objects.all()
     serializer_class = ScheduleItemSerializer
+    permission_classes = (permissions.IsAuthenticated,)

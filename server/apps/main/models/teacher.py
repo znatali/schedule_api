@@ -13,7 +13,7 @@ class Teacher(BaseMixin):
     first_name = models.CharField(max_length=TEACHER_NAME_LONG_MAX)
     middle_name = models.CharField(max_length=TEACHER_NAME_LONG_MAX)
     last_name = models.CharField(max_length=TEACHER_NAME_LONG_MAX)
-    teaching_subject = JSONField()
+    teaching_subject = JSONField(null=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):

@@ -6,6 +6,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from server.apps.main.views.faculty import FacultyViewSet
+from server.apps.main.views.index import index
 from server.apps.main.views.schedule import (
     ScheduleDayViewSet,
     ScheduleItemViewSet,
@@ -28,5 +29,6 @@ router.register(r'faculty', FacultyViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rest-auth/', include('rest_auth.urls')),
+    path('hello', index, name='hello'),
     url(r'^', include((router.urls, app_name), namespace='drf'), name='index'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
