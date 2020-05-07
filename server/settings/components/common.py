@@ -38,7 +38,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     # Third party apps
     'rest_framework',  # utilities for rest apis
     'rest_auth',
-    # 'rest_framework.authtoken',  # token authentication
+    'rest_framework.authtoken',  # token authentication
     # 'django_filters',  # for filtering rest endpoints
 
     # django-admin:

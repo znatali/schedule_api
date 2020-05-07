@@ -30,3 +30,11 @@ When developing locally, we use:
 ## Documentation
 
 Full documentation is available here: [`docs/`](docs).
+
+## Quick start
+~~~~~~~~~~~~~~
+poetry shell
+poetry install
+psql postgres -U postgres -f sql/create_database.sql
+python manage.py migrate
+python manage.py runserver
