@@ -27,6 +27,7 @@ def test_faculty(admin_client, admin_user):
                 code='max_length',
             ),
         ],
+        'status_code': 400,
     }
 
     # Create should be successful.

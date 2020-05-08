@@ -17,7 +17,7 @@ class Teacher(BaseMixin):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        """Return string self first_name."""
+        """Return string self full name."""
         return self.get_full_name()
 
     def get_full_name(self) -> str:

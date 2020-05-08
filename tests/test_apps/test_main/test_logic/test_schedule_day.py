@@ -26,7 +26,10 @@ def test_schedule_day(admin_client, admin_user):
         },
     )
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.data == {'schedule': [ErrorDetail(string='This field is required.', code='required')]}
+    assert response.data == {
+        'schedule': [ErrorDetail(string='This field is required.', code='required')],
+        'status_code': 400,
+    }
 
     # Create faculty first, then create schedule should be successful.
     response = admin_client.post(

@@ -1,12 +1,15 @@
 from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
-from rest_framework import mixins, permissions, viewsets
+from rest_framework import exceptions, mixins, permissions, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 
 from server.apps.main.logic.schedule_day_serializer import ScheduleDaySerializer
 from server.apps.main.logic.schedule_item_serializer import (
+    ScheduleItemCreateSerializer,
     ScheduleItemSerializer,
+    ScheduleItemUpdateSerializer,
 )
 from server.apps.main.logic.schedule_serializer import ScheduleSerializer
 from server.apps.main.models.schedule import Schedule
@@ -36,10 +39,11 @@ class ScheduleViewSet(
 
         schedule = self.get_object()
         ws['A1'] = schedule.title
-        ws['A2'] = schedule.faculty
+        ws['A2'] = schedule.faculty.title
         ws['A3'] = f'{str(schedule.year)} Курс'
         ws['A4'] = f'{str(schedule.term)} Семестр'
         ws['A5'] = schedule.education_format
+
         schedule_days = ScheduleDay.objects.filter(schedule=schedule).all()
         start_day_row = 6
         for schedule_day in schedule_days:
@@ -54,7 +58,6 @@ class ScheduleViewSet(
                 ws.cell(row=start_day_row, column=2).value = f'{schedule_item.title} ({schedule_item.type})'
                 ws.cell(row=start_day_row, column=3).value = schedule_item.teacher.get_full_name()
                 start_day_row += 1
-
         response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename=sample.xlsx'
         return response
@@ -88,3 +91,29 @@ class ScheduleItemViewSet(
     queryset = ScheduleItem.objects.all()
     serializer_class = ScheduleItemSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+    def get_serializer(self, *args, **kwargs):
+        """
+        Route serializers based on action.
+
+            list                    ScheduleItemSerializer
+            retrieve                ScheduleItemSerializer
+            update, partial_update  ScheduleItemUpdateSerializer
+            create                  ScheduleItemCreateSerializer
+        """
+        if self.request.user.is_anonymous and AllowAny in self.permission_classes:
+            kwargs['context'] = self.get_serializer_context()
+            return self.serializer_class(*args, **kwargs)
+        if self.action in {'list', 'retrieve'}:
+            serializer_class = ScheduleItemSerializer
+        elif self.action in {'update', 'partial_update'}:
+            serializer_class = ScheduleItemUpdateSerializer
+        elif self.action == 'create':
+            serializer_class = ScheduleItemCreateSerializer
+        else:
+            serializer_class = None
+
+        if serializer_class is None:
+            raise exceptions.ValidationError(detail={self.action: ['Permission error.']})
+        kwargs['context'] = self.get_serializer_context()
+        return serializer_class(*args, **kwargs)
