@@ -32,7 +32,3 @@ class Schedule(BaseMixin):
     education_format = models.CharField(
         max_length=MAX_FORMAT_LONG, choices=EducationFormat.choices, default=EducationFormat.FULL_TIME,
     )
-
-    def __str__(self):
-        """Return string self title."""
-        return self.title

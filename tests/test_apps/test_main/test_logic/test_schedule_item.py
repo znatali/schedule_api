@@ -319,6 +319,12 @@ def test_schedule_item(admin_client, admin_user):
     response = admin_client.get('/schedule-item/')
     assert response.status_code == status.HTTP_200_OK
 
+    # Test download file schedule
+    response = admin_client.get(f'/schedule/{schedule_id}/download/')
+    assert response['Content-Disposition'] == f'attachment; filename=schedule.docx'
+    assert response['Content-Type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    assert len(response.content) > 0   # noqa: WPS507
+
     # Delete should be successful.
     response = admin_client.delete(
         f'/schedule-item/{schedule_item_model.pk}/',

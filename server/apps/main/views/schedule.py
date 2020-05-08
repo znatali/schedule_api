@@ -1,6 +1,5 @@
 from django.http import HttpResponse
-from openpyxl import Workbook
-from openpyxl.writer.excel import save_virtual_workbook
+from docx import Document
 from rest_framework import exceptions, mixins, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
@@ -34,33 +33,41 @@ class ScheduleViewSet(
     @action(detail=True, methods=['get'])
     def download(self, request, pk):
         """Get formatted schedule."""
-        wb = Workbook()
-        ws = wb.active
-
+        document = Document()
         schedule = self.get_object()
-        ws['A1'] = schedule.title
-        ws['A2'] = schedule.faculty.title
-        ws['A3'] = f'{str(schedule.year)} Курс'
-        ws['A4'] = f'{str(schedule.term)} Семестр'
-        ws['A5'] = schedule.education_format
+        document.add_heading(schedule.title, 0)
+        document.add_paragraph(schedule.faculty.title)
+        document.add_paragraph(f'Курс {str(schedule.year)}')
+        document.add_paragraph(f'Семестр {str(schedule.term)}')
+        document.add_paragraph(f'Форма обучения {schedule.education_format}')
 
         schedule_days = ScheduleDay.objects.filter(schedule=schedule).all()
-        start_day_row = 6
+
+        table = document.add_table(rows=1, cols=3)
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = 'День'
+        hdr_cells[1].text = 'Время'
+        hdr_cells[2].text = 'Занятие'
+
         for schedule_day in schedule_days:
-            ws.cell(row=start_day_row, column=1).value = f'{schedule_day.title} ' +\
+            row_cells = table.add_row().cells
+            row_cells[0].text = f'{schedule_day.title} ' +\
                 f'{schedule_day.date.strftime("%d-%b-%Y")}'  # noqa: WPS323
             schedule_items = ScheduleItem.objects.filter(schedule_day=schedule_day).all()
-            start_day_row += 1
             for schedule_item in schedule_items:
-                ws.cell(row=start_day_row, column=1).value = \
+                row_cells = table.add_row().cells
+                row_cells[1].text = \
                     f'{schedule_item.start_time.strftime("%H:%M")} - ' \
                     + f'{schedule_item.end_time.strftime("%H:%M")}'
-                ws.cell(row=start_day_row, column=2).value = f'{schedule_item.title} ({schedule_item.type})'
-                ws.cell(row=start_day_row, column=3).value = schedule_item.teacher.get_full_name()
-                start_day_row += 1
-        response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename=sample.xlsx'
-        return response
+                row_cells[2].text = \
+                    f'{schedule_item.title} ({schedule_item.type}) {schedule_item.teacher.get_full_name()}'
+
+        http_word_response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        )
+        document.save(http_word_response)
+        http_word_response['Content-Disposition'] = 'attachment; filename=schedule.docx'
+        return http_word_response
 
 
 class ScheduleDayViewSet(
