@@ -1,6 +1,6 @@
-# schedule_api
+# Schedule Api
 
-schedule_api
+# Simple Django Rest API for setup a university schedule and export it to docs/xls - WORK IN PROGRESS
 
 This project was generated with [`wemake-django-template`](https://github.com/wemake-services/wemake-django-template). Current template version is: [770bbf1e0dd96ca898ab50768b66b67e0cc8f78f](https://github.com/wemake-services/wemake-django-template/tree/770bbf1e0dd96ca898ab50768b66b67e0cc8f78f). See what is [updated](https://github.com/wemake-services/wemake-django-template/compare/770bbf1e0dd96ca898ab50768b66b67e0cc8f78f...master) since then.
 
@@ -31,10 +31,28 @@ When developing locally, we use:
 
 Full documentation is available here: [`docs/`](docs).
 
-## Quick start
+
+
+## Quick start with docker
+~~~~~~~~~~~~~~
+poetry shell
+poetry install
+docker-compose build
+docker-compose run --rm web python manage.py migrate
+docker-compose run --rm web ./manage.py createsuperuser --email super-admin@example.com --username super-admin
+docker-compose up
+~~~~~~~~~~~~~~
+
+## Quick start for local development
 ~~~~~~~~~~~~~~
 poetry shell
 poetry install
 psql postgres -U postgres -f sql/create_database.sql
 python manage.py migrate
 python manage.py runserver
+~~~~~~~~~~~~~~
+
+
+## Project TODO:
+1. Add translation.
+2. Advanced Export Schedule to docx.
