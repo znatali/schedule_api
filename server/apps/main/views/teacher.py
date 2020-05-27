@@ -1,4 +1,4 @@
-from rest_framework import mixins, permissions, viewsets
+from rest_framework import mixins, viewsets
 
 from server.apps.main.logic.teacher_serializer import TeacherSerializer
 from server.apps.main.models.teacher import Teacher
@@ -16,4 +16,3 @@ class TeacherViewSet(
 
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
-    permission_classes = (permissions.IsAuthenticated,)

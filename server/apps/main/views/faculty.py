@@ -1,4 +1,4 @@
-from rest_framework import mixins, permissions, viewsets
+from rest_framework import mixins, viewsets
 
 from server.apps.main.logic.faculty_serializer import FacultySerializer
 from server.apps.main.models.faculty import Faculty
@@ -16,4 +16,3 @@ class FacultyViewSet(
 
     queryset = Faculty.objects.all()
     serializer_class = FacultySerializer
-    permission_classes = (permissions.IsAuthenticated,)

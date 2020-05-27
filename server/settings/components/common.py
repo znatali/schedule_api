@@ -20,7 +20,7 @@ from server.settings.components import BASE_DIR, config
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 AUTH_USER_MODEL = 'main.User'
-
+API_AUTH_KEY = config('API_AUTH_SECRET_KEY')  # using in API calls
 
 # Application definition:
 
@@ -192,8 +192,7 @@ PASSWORD_HASHERS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'server.lib.csrf_disable.CsrfExemptSessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from docx import Document
-from rest_framework import exceptions, mixins, permissions, viewsets
+from rest_framework import exceptions, mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 
@@ -28,7 +28,6 @@ class ScheduleViewSet(
 
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
     @action(detail=True, methods=['get'])
     def download(self, request, pk):
@@ -82,7 +81,6 @@ class ScheduleDayViewSet(
 
     queryset = ScheduleDay.objects.all()
     serializer_class = ScheduleDaySerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
 
 class ScheduleItemViewSet(
@@ -97,7 +95,6 @@ class ScheduleItemViewSet(
 
     queryset = ScheduleItem.objects.all()
     serializer_class = ScheduleItemSerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
     def get_serializer(self, *args, **kwargs):
         """
